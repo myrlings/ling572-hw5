@@ -11,7 +11,7 @@ sys_output_filename = sys.argv[3]
 
 #data structures, constants
 model = {}
-categories = set()
+categories = set() #just initializing up top so it's visible
 e = 2.71828182845904523536028747135266249775724709369995
 
 

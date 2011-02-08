@@ -1,0 +1,8 @@
+Matt Todd
+Caleb Barr
+LING 572 HW #5
+
+Q1) Training accuracy: 0.969
+Test accuracy: 0.84
+
+

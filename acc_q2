@@ -1,0 +1,16 @@
+
+Confusion matrix:
+row is the truth, column is the system output
+
+class_num= 3 , feat_num= 143
+
+
+		talk.politics.guns		talk.politics.misc		talk.politics.mideast
+talk.politics.guns		82		17				1
+talk.politics.misc		17		77				6
+talk.politics.mideast		3		4				93
+
+
+Accuracy: 0.84
+
+

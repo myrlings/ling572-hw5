@@ -13,6 +13,8 @@ sys_output_filename = sys.argv[3]
 model = {}
 categories = set() #just initializing up top so it's visible
 e = 2.71828182845904523536028747135266249775724709369995
+instances = {}
+expected = {}
 
 
 
@@ -47,6 +49,9 @@ for instance in test_file.readlines():
 	instance_category = instance[1]
 	features = instance[2::2]
 	values = instance[3::2]
+	
+	instances[path] = {}
+	instances[path]['true'] = instance_category
 
 	# Z=0;
 	#for each y in Y 
@@ -67,12 +72,17 @@ for instance in test_file.readlines():
 				summation+=model[category][feature]
 			except KeyError:
 				summation+=0
-		result_category = ee*summation
+		result_category = e**summation
 		result[category] = result_category
 		Z+=result_category
 
 	sys_output_file.write(path)		
-	for category in sorted(results, key=results.get, reverse=True):  #do we need to distinguish the winner here?  how about its original label? is our sys file correct for hw3?  am i doing this right at all?
+	sys_output_file.write(" "+ instance_category +" ")
+	
+	sorted_categories = sorted(results, key=results.get, reverse=True)
+	instance['expected'] = sorted_categories[0]
+	
+	for category in sorted_categories:
 		prob_category_given_instance = result[category] / Z
 		sys_output_file.write(" " + category + " "+ prob_category_given_instance)
 	sys_output_file.write("\n")
@@ -81,6 +91,58 @@ for instance in test_file.readlines():
 		
 		
 		
-#print confusion matrix
+# #print confusion matrix
 
-#not sure where to go on this one yet, hoping we can talk about it -- confusion matrices still have me a bit confused, but i'll check out your previous code tomorrow and that ought to get me a head start
+print "\nConfusion matrix for the training data:"
+print "row is the truth, column is the system output\n"
+
+print "class_num=", len(instances), ", feat_num=", # vectors_labels[2]			Should we be tallying the total number of features or unique features?
+
+counts = {}
+num_right = 0
+for true_category in categories:
+	sys.stdout.write("\t" + true_category)
+	counts[true_category] = {}
+	for expected_category in categories:
+		counts[true_category][expected_category] = 0
+for instance in instances:
+	true_category = instances[instance]['true']
+	expected_category = instances[instance]['expected']
+	counts[true_category][expected_category] +=1
+	if true_category == expected_category:
+		num_right += 1
+sys.stdout.write("\n")
+for true_category in categories:
+	sys.stdout.write(true_category)
+	for expected_category in categories:
+		sys.stdout.write("\t" + str(counts[true_category][expected_category]))
+	sys.stdout.write("\n")
+accuracy = float(num_right) / len(instances)
+
+print "Accuracy:",accuracy
+
+
+# def print_acc(vectors, guesses, labels):
+#     counts = {}
+#     num_right = 0
+#     for actuallabel in labels:
+#         sys.stdout.write("\t" + actuallabel)
+#         counts[actuallabel] = {}
+#         for expectedlabel in labels:
+#             counts[actuallabel][expectedlabel] = 0
+#     for instance in vectors:
+#         actual_label = vectors[instance]['class_label']
+#         expected_label = guesses[instance]['winner']
+#         counts[actual_label][expected_label] += 1
+#         if actual_label == expected_label:
+#             num_right += 1
+# 
+#     sys.stdout.write("\n")
+#     for actuallabel in labels:
+#         sys.stdout.write(actuallabel)
+#         for expectedlabel in labels:
+#             sys.stdout.write("\t" + str(counts[actuallabel][expectedlabel]))
+#         sys.stdout.write("\n")
+#     accuracy = float(num_right) / len(vectors)
+#     return accuracy
+

@@ -39,7 +39,7 @@ categories = set(model.keys())
 
 #read in test file, print sys output
 test_file = open(test_data_filename, 'r')
-sys_output_file = open(sys_output_filename, 'a')
+sys_output_file = open(sys_output_filename, 'w')
 for instance in test_file.readlines():
 	instance = instance.split()
 	path = instance[0]
@@ -65,13 +65,12 @@ for instance in test_file.readlines():
 		result_category = e**summation
 		result[category] = result_category
 		Z+=result_category
-
-	sys_output_file.write(path)		
-	sys_output_file.write(" "+ instance_category +" ")
 	
 	sorted_categories = sorted(result, key=result.get, reverse=True)	
 	instances[path]['expected'] = sorted_categories[0]
-	
+
+	sys_output_file.write(path)		
+	sys_output_file.write(" "+ instance_category +" ")
 	for category in sorted_categories:
 		prob_category_given_instance = result[category] / Z
 		sys_output_file.write(" " + category + " "+ str(prob_category_given_instance))

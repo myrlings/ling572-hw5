@@ -5,4 +5,7 @@ LING 572 HW #5
 Q1) Training accuracy: 0.969
 Test accuracy: 0.84
 
-
+Q2) Test accuracy: 0.84
+It was the same, which is good, since we were using the same model that was
+generated in Q1. All the calculations for getting each class's probability
+should be the same.
